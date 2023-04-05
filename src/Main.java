@@ -5,43 +5,61 @@ public class Main {
         System.out.println("Calculator made using Java");
 
         //Variable declaration
-        int firstNumber;
-        int secondNumber;
-        char symbol;
-        double answer;
+        String input;
+        double answer = 0;
+        char symbol = '+';
+        boolean isValid = true;
+
         Scanner scanner = new Scanner(System.in);
 
-        while(true)
+        while(true && isValid)
         {
-            System.out.print("Enter first Number:");
-            firstNumber = scanner.nextInt();
+            System.out.print("Enter the calculation you want to perform using the format ( 5+6 ): ");
+            input = scanner.next();
 
-            System.out.print("Enter second Number");
-            secondNumber = scanner.nextInt();
+            String temp = "";
+            input += "=";
+            answer = 0;
+            symbol = '+';
 
-            System.out.print("Enter Symbol:");
-            symbol = scanner.next().charAt(0);
-
-            switch (symbol)
+            for(int i=0;i<input.length();i++)
             {
-                case '+':
-                    answer = firstNumber + secondNumber;
+                char c = input.charAt(i);
+
+                if(Character.isDigit(c)) {
+                    temp += c;
+                }
+                else
+                {
+                    switch (symbol)
+                    {
+                        case '+':
+                            answer += Integer.parseInt(temp);
+                            break;
+                        case '-':
+                            answer -= Integer.parseInt(temp);
+                            break;
+                        case '*':
+                            answer *= Integer.parseInt(temp);
+                            break;
+                        case '/':
+                            answer /= Integer.parseInt(temp);
+                            break;
+                        default:
+                            System.out.println("Wrong input string");
+                            isValid = false;
+                            break;
+                    }
+                    symbol = c;
+                    temp = "";
+                }
+
+                if(!isValid)
                     break;
-                case '-':
-                    answer = firstNumber - secondNumber;
-                    break;
-                case '*':
-                    answer = firstNumber * secondNumber;
-                    break;
-                case '/':
-                    answer = firstNumber / secondNumber;
-                    break;
-                default:
-                    answer = 0;
-                    System.out.println("Wrong symbol entered");
             }
 
-            System.out.println(firstNumber +"" +symbol +""+secondNumber + "=" + answer);
+            if(isValid)
+                System.out.println(input + "" + (int)answer);
 
             System.out.println("Do you want another calculation?");
             if("no".equals(scanner.next()))
